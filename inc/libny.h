@@ -16,6 +16,8 @@ typedef struct ny_list_s
 	struct ny_list_s* next;
 } ny_list_st;
 
+int ny_atoi(char const* str);
+
 char* ny_strdup(char const* src);
 char* ny_strndup(char const* src, size_t length);
 
