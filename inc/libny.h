@@ -16,16 +16,18 @@ typedef struct ny_list_s
 	struct ny_list_s* next;
 } ny_list_st;
 
-char* ny_strdup(char const* src, size_t length);
+char* ny_strdup(char const* src);
+char* ny_strndup(char const* src, size_t length);
 
-char* ny_strcpy(char* dest, char const* src, size_t n);
+char* ny_strcpy(char* dest, char const* src);
+char* ny_strncpy(char* dest, char const* src, size_t n);
 
-char *ny_strcat(char* dest, char const* src, size_t n);
+char *ny_strcat(char* dest, char const* src);
+char *ny_strncat(char* dest, char const* src, size_t n);
 
 char* ny_strjoin(char const* s1, char const* s2);
 
 int ny_strcmp(char const* s1, char const* s2);
-
 int ny_strncmp(char const* s1, char const* s2, size_t n);
 
 size_t ny_strlen(char const* str);
