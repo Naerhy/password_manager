@@ -1,6 +1,18 @@
 #include "password_manager.h"
 
-static void delete_item(void* content)
+void exit_program(ny_list_st* items, char const* error_msg)
+{
+	if (items)
+		ny_list_clear(items, delete_item);
+	if (error_msg)
+	{
+		ny_wrstr_nl(2, error_msg);
+		exit(EXIT_FAILURE);
+	}
+	exit(EXIT_SUCCESS);
+}
+
+void delete_item(void* content)
 {
 	item_st* item;
 
@@ -12,14 +24,38 @@ static void delete_item(void* content)
 	free(item);
 }
 
-void exit_program(ny_list_st* items, char const* error_msg)
+void write_to_file(ny_list_st* items)
 {
-	if (items)
-		ny_list_clear(items, delete_item);
-	if (error_msg)
+	int fd;
+	ny_list_st* temp;
+	item_st* item;
+	char* id;
+	char* join;
+
+	fd = open(FILENAME, O_WRONLY | O_TRUNC);
+	if (fd == -1)
+		exit_program(items, "unable to open file");
+	temp = items;
+	while (items)
 	{
-		ny_wrstr_nl(2, error_msg);
-		exit(EXIT_FAILURE);
+		item = (item_st*)items->content;
+		id = ny_itoa(item->id);
+		if (!id)
+		{
+			close(fd);
+			exit_program(temp, "unable to allocate memory");
+		}
+		join = ny_strjoin_var(9, id, " ", item->website, " ", item->username, " ",
+				item->email, " ", item->password);
+		free(id);
+		if (!join)
+		{
+			close(fd);
+			exit_program(temp, "unable to allocate memory");
+		}
+		ny_wrstr_nl(fd, join);
+		free(join);
+		items = items->next;
 	}
-	exit(EXIT_SUCCESS);
+	close(fd);
 }

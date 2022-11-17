@@ -2,8 +2,11 @@
 #define __PASSWORD_MANAGER_H__
 
 #include <stdlib.h>
+#include <fcntl.h>
 
 #include "libny.h"
+
+#define FILENAME ".passwords"
 
 typedef enum cmd_e
 {
@@ -23,8 +26,16 @@ typedef struct item_s
 	char* password;
 } item_st;
 
-cmd_et parse_cmd(char const* cmd);
-
+// exit.c
 void exit_program(ny_list_st* items, char const* error_msg);
+void delete_item(void* content);
+void write_to_file(ny_list_st* items);
+
+// item.c
+item_st* create_item(char const* line);
+
+// parsing.c
+cmd_et parse_cmd(char const* cmd);
+void parse_file(ny_list_st** items);
 
 #endif
