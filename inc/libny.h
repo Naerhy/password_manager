@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 #define GNL_BUFSIZE 1000
 
@@ -28,6 +29,7 @@ char *ny_strcat(char* dest, char const* src);
 char *ny_strncat(char* dest, char const* src, size_t n);
 
 char* ny_strjoin(char const* s1, char const* s2);
+char* ny_strjoin_var(size_t nb_args, ...);
 
 int ny_strcmp(char const* s1, char const* s2);
 int ny_strncmp(char const* s1, char const* s2, size_t n);
@@ -36,6 +38,7 @@ size_t ny_strlen(char const* str);
 
 char** ny_split(char const* str, char c);
 
+void ny_wrstr(int fd, char const* str);
 void ny_wrstr_nl(int fd, char const* str);
 
 void ny_free_double_ptr(void** dptr, size_t size);
