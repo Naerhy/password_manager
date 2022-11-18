@@ -14,7 +14,7 @@ int main(int argc, char const** argv)
 	items = NULL;
 	next_id = 0;
 	parse_file(&items, &next_id);
-	// exec_cmd(cmd, argc, argv, items);
+	exec_cmd(cmd, argc, argv, &items, &next_id);
 	write_to_file(items, next_id);
 	ny_list_clear(items, delete_item);
 	return 0;

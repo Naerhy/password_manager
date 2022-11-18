@@ -26,6 +26,9 @@ typedef struct item_s
 	char* password;
 } item_st;
 
+// exec.c
+void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_t* next_id);
+
 // exit.c
 void exit_program(ny_list_st* items, char const* error_msg);
 void delete_item(void* content);
