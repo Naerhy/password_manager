@@ -17,6 +17,8 @@ typedef struct ny_list_s
 	struct ny_list_s* next;
 } ny_list_st;
 
+bool ny_isdigit(char c);
+
 int ny_atoi(char const* str);
 
 char* ny_itoa(int nb);
