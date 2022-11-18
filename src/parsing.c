@@ -14,7 +14,7 @@ cmd_et parse_cmd(char const* cmd)
 		return UNKNOWN;
 }
 
-void parse_file(ny_list_st** items)
+void parse_file(ny_list_st** items, size_t* next_id)
 {
 	int fd;
 	char* line;
@@ -31,21 +31,29 @@ void parse_file(ny_list_st** items)
 		line = ny_get_next_line(fd, &error_status);
 		if (!line)
 			break;
-		item = create_item(line);
-		free(line);
-		if (!item)
+		if (!ny_strncmp(line, "id=", 3))
 		{
-			close(fd);
-			exit_program(*items, "unable to allocate memory");
+			*next_id = (size_t)ny_atoi(line + 3);
+			free(line);
 		}
-		node = ny_list_new(item);
-		if (!node)
+		else
 		{
-			free(item);
-			close(fd);
-			exit_program(*items, "unable to allocate memory");
+			item = create_item(line);
+			free(line);
+			if (!item)
+			{
+				close(fd);
+				exit_program(*items, "unable to allocate memory");
+			}
+			node = ny_list_new(item);
+			if (!node)
+			{
+				free(item);
+				close(fd);
+				exit_program(*items, "unable to allocate memory");
+			}
+			ny_list_add(items, node);
 		}
-		ny_list_add(items, node);
 	}
 	close(fd);
 	if (error_status)

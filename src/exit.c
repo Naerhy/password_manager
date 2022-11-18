@@ -24,7 +24,24 @@ void delete_item(void* content)
 	free(item);
 }
 
-void write_to_file(ny_list_st* items)
+static int write_id(int fd, size_t next_id)
+{
+	char* str_next_id;
+	char* join;
+
+	str_next_id = ny_itoa(next_id);
+	if (!str_next_id)
+		return 0;
+	join = ny_strjoin("id=", str_next_id);
+	free(str_next_id);
+	if (!join)
+		return 0;
+	ny_wrstr_nl(fd, join);
+	free(join);
+	return 1;
+}
+
+void write_to_file(ny_list_st* items, size_t next_id)
 {
 	int fd;
 	ny_list_st* temp;
@@ -35,6 +52,11 @@ void write_to_file(ny_list_st* items)
 	fd = open(FILENAME, O_WRONLY | O_TRUNC);
 	if (fd == -1)
 		exit_program(items, "unable to open file");
+	if (!write_id(fd, next_id))
+	{
+		close(fd);
+		exit_program(items, "unable to allocate memory");
+	}
 	temp = items;
 	while (items)
 	{

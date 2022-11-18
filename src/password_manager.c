@@ -1,11 +1,10 @@
 #include "password_manager.h"
 
-#include <stdio.h>
-
 int main(int argc, char const** argv)
 {
-	ny_list_st* items;
 	cmd_et cmd;
+	ny_list_st* items;
+	size_t next_id;
 
 	if (argc < 2 || argc > 6)
 		exit_program(NULL, "invalid number of arguments");
@@ -13,8 +12,10 @@ int main(int argc, char const** argv)
 	if (cmd == UNKNOWN)
 		exit_program(NULL, "unknown command");
 	items = NULL;
-	parse_file(&items);
-	write_to_file(items);
+	next_id = 0;
+	parse_file(&items, &next_id);
+	// exec_cmd(cmd, argc, argv, items);
+	write_to_file(items, next_id);
 	ny_list_clear(items, delete_item);
 	return 0;
 }
