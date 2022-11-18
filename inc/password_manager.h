@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+#include <stdio.h> // remove once printf is not mandatory anymore
+
 #include "libny.h"
 
 #define FILENAME ".passwords"

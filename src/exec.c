@@ -31,6 +31,19 @@ static void exec_add(char const** argv, ny_list_st** items, size_t next_id)
 	ny_list_add(items, node);
 }
 
+static void exec_list(ny_list_st* items)
+{
+	item_st* item;
+
+	while (items)
+	{
+		item = (item_st*)items->content;
+		printf("%ld | %s | %s | %s | %s\n", item->id, item->website, item->username,
+				item->email, item->password);
+		items = items->next;
+	}
+}
+
 void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_t* next_id)
 {
 	if (cmd == ADD && argc == 6)
@@ -39,7 +52,8 @@ void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_
 		(*next_id)++;
 	}
 	// else if (cmd == DELETE && argc == 3 && is_valid_id(*(argv + 2)));
-	// else if (cmd == LIST); // no need to check if args are valid
+	else if (cmd == LIST)
+		exec_list(*items);
 	// else if (cmd == GET && argc == 3);
 	else
 		exit_program(*items, "invalid arguments");
