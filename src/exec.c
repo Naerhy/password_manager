@@ -31,6 +31,36 @@ static void exec_add(char const** argv, ny_list_st** items, size_t next_id)
 	ny_list_add(items, node);
 }
 
+static bool is_valid_id(char const* str)
+{
+	if (ny_strlen(str) > 5)
+		return FALSE;
+	while (*str)
+	{
+		if (!ny_isdigit(*str))
+			return FALSE;
+		str++;
+	}
+	return TRUE;
+}
+
+static void exec_delete(ny_list_st** head, ny_list_st* items, char const* str_id)
+{
+	size_t id;
+	ny_list_st* temp;
+	item_st* item;
+
+	id = ny_atoi(str_id);
+	while (items)
+	{
+		temp = items->next;
+		item = (item_st*)items->content;
+		if (item->id == id)
+			ny_list_delete(head, items, delete_item);
+		items = temp;
+	}
+}
+
 static void exec_list(ny_list_st* items)
 {
 	item_st* item;
@@ -65,7 +95,8 @@ void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_
 		exec_add(argv, items, *next_id);
 		(*next_id)++;
 	}
-	// else if (cmd == DELETE && argc == 3 && is_valid_id(*(argv + 2)));
+	else if (cmd == DELETE && argc == 3 && is_valid_id(*(argv + 2)))
+		exec_delete(items, *items, *(argv + 2));
 	else if (cmd == LIST)
 		exec_list(*items);
 	else if (cmd == GET && argc == 3)
