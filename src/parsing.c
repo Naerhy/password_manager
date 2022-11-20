@@ -14,13 +14,35 @@ cmd_et parse_cmd(char const* cmd)
 		return UNKNOWN;
 }
 
+static int parse_item_line(char* line, ny_list_st** items)
+{
+	char** split;
+	item_st* item;
+	ny_list_st* node;
+
+	split = ny_split(line, ' ');
+	free(line);
+	if (!split)
+		return 0;
+	item = create_item(ny_atoi(*split), split + 1);
+	ny_free_double_ptr((void**)split, 5);
+	if (!item)
+		return 0;
+	node = ny_list_new(item);
+	if (!node)
+	{
+		delete_item(item);
+		return 0;
+	}
+	ny_list_add(items, node);
+	return 1;
+}
+
 void parse_file(ny_list_st** items, size_t* next_id)
 {
 	int fd;
 	char* line;
 	int error_status;
-	item_st* item;
-	ny_list_st* node;
 
 	fd = open(FILENAME, O_RDONLY | O_CREAT, 0666);
 	if (fd == -1)
@@ -38,21 +60,11 @@ void parse_file(ny_list_st** items, size_t* next_id)
 		}
 		else
 		{
-			item = create_item(line);
-			free(line);
-			if (!item)
+			if (!parse_item_line(line, items))
 			{
 				close(fd);
 				exit_program(*items, "unable to allocate memory");
 			}
-			node = ny_list_new(item);
-			if (!node)
-			{
-				free(item);
-				close(fd);
-				exit_program(*items, "unable to allocate memory");
-			}
-			ny_list_add(items, node);
 		}
 	}
 	close(fd);

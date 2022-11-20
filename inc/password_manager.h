@@ -29,7 +29,7 @@ typedef struct item_s
 } item_st;
 
 // exec.c
-void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_t* next_id);
+void exec_cmd(cmd_et cmd, int argc, char** argv, ny_list_st** items, size_t* next_id);
 
 // exit.c
 void exit_program(ny_list_st* items, char const* error_msg);
@@ -37,7 +37,7 @@ void delete_item(void* content);
 void write_to_file(ny_list_st* items, size_t next_id);
 
 // item.c
-item_st* create_item(char const* line);
+item_st* create_item(size_t id, char** data);
 
 // parsing.c
 cmd_et parse_cmd(char const* cmd);

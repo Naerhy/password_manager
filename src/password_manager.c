@@ -1,6 +1,6 @@
 #include "password_manager.h"
 
-int main(int argc, char const** argv)
+int main(int argc, char** argv)
 {
 	cmd_et cmd;
 	ny_list_st* items;

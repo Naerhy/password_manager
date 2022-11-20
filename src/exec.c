@@ -1,31 +1,20 @@
 #include "password_manager.h"
 
-static void exec_add(char const** argv, ny_list_st** items, size_t next_id)
+static void exec_add(char** argv, ny_list_st** items, size_t next_id)
 {
-	char* str_next_id;
-	char* line;
 	item_st* item;
 	ny_list_st* node;
 
 	if (!ny_strlen(*(argv + 2)) || !ny_strlen(*(argv + 3)) || !ny_strlen(*(argv + 4))
 			|| !ny_strlen(*(argv + 5)))
 		exit_program(*items, "invalid list of arguments");
-	str_next_id = ny_itoa(next_id);
-	if (!str_next_id)
-		exit_program(*items, "unable to allocate memory");
-	line = ny_strjoin_var(9, str_next_id, " ", *(argv + 2), " ", *(argv + 3), " ",
-			*(argv + 4), " ", *(argv + 5));
-	free(str_next_id);
-	if (!line)
-		exit_program(*items, "unable to allocate memory");
-	item = create_item(line);
-	free(line);
+	item = create_item(next_id, argv + 2);
 	if (!item)
 		exit_program(*items, "unable to allocate memory");
 	node = ny_list_new(item);
 	if (!node)
 	{
-		free(item);
+		delete_item(item);
 		exit_program(*items, "unable to allocate memory");
 	}
 	ny_list_add(items, node);
@@ -88,7 +77,7 @@ static void exec_get(ny_list_st* items, char const* to_find)
 	}
 }
 
-void exec_cmd(cmd_et cmd, int argc, char const** argv, ny_list_st** items, size_t* next_id)
+void exec_cmd(cmd_et cmd, int argc, char** argv, ny_list_st** items, size_t* next_id)
 {
 	if (cmd == ADD && argc == 6)
 	{
