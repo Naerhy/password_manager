@@ -1,3 +1,4 @@
 *.o
-
+.backups
 .passwords
+password_manager
