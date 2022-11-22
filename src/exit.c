@@ -6,6 +6,7 @@ void exit_program(ny_list_st* items, char const* error_msg)
 		ny_list_clear(items, delete_item);
 	if (error_msg)
 	{
+		ny_wrstr(2, "PwM: ");
 		ny_wrstr_nl(2, error_msg);
 		exit(EXIT_FAILURE);
 	}
@@ -51,7 +52,7 @@ void write_to_file(ny_list_st* items, size_t next_id)
 
 	fd = open(FILENAME, O_WRONLY | O_TRUNC);
 	if (fd == -1)
-		exit_program(items, "unable to open file");
+		exit_program(items, "unable to open file descriptor");
 	if (!write_id(fd, next_id))
 	{
 		close(fd);
