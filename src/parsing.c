@@ -44,7 +44,7 @@ void parse_file(ny_list_st** items, size_t* next_id)
 	char* line;
 	int error_status;
 
-	fd = open(FILENAME, O_RDONLY | O_CREAT, 0666);
+	fd = open(FILENAME, O_RDONLY | O_CREAT, S_IRUSR | S_IWUSR);
 	if (fd == -1)
 		exit_program(NULL, "unable to open file descriptor");
 	error_status = 0;

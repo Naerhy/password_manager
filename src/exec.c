@@ -8,6 +8,8 @@ static void exec_add(char** argv, ny_list_st** items, size_t next_id)
 	if (!ny_strlen(*(argv + 2)) || !ny_strlen(*(argv + 3)) || !ny_strlen(*(argv + 4))
 			|| !ny_strlen(*(argv + 5)))
 		exit_program(*items, "invalid list of arguments");
+	if (!create_backup_file())
+		exit_program(*items, "unable to create log file");
 	item = create_item(next_id, argv + 2);
 	if (!item)
 		exit_program(*items, "unable to allocate memory");
@@ -39,6 +41,8 @@ static void exec_delete(ny_list_st** head, ny_list_st* items, char const* str_id
 	ny_list_st* temp;
 	item_st* item;
 
+	if (!create_backup_file())
+		exit_program(items, "unable to create log file");
 	id = ny_atoi(str_id);
 	while (items)
 	{
