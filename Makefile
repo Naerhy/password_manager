@@ -10,10 +10,12 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
+DEFINES = -D BASE_DIR='"/home/${USER}/.pwm/"'
+
 RM = rm -rf
 
 .c.o:
-	${CC} ${CFLAGS} -Iinc -c $< -o ${<:.c=.o}
+	${CC} ${CFLAGS} ${DEFINES} -Iinc -c $< -o ${<:.c=.o}
 
 ${NAME}: ${OBJ}
 	${CC} -o ${NAME} ${OBJ} ${LIB}

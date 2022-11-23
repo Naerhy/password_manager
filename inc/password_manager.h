@@ -8,7 +8,8 @@
 
 #include "libny.h"
 
-#define FILENAME ".passwords"
+#define FILENAME BASE_DIR "passwords"
+#define BACKUPS_DIR BASE_DIR "backups/"
 
 typedef enum cmd_e
 {

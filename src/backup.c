@@ -10,7 +10,7 @@ static char* get_filename(void)
 	time_str = ny_itoa(tv.tv_sec);
 	if (!time_str)
 		return NULL;
-	join = ny_strjoin(".backups/", time_str);
+	join = ny_strjoin(BACKUPS_DIR, time_str);
 	free(time_str);
 	if (!join)
 		return NULL;
