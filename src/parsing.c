@@ -60,6 +60,7 @@ void parse_file(ny_list_st** items, size_t* next_id)
 		}
 		else
 		{
+			encrypt_rot13(line);
 			if (!parse_item_line(line, items))
 			{
 				close(fd);

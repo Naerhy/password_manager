@@ -103,6 +103,7 @@ void write_to_file(ny_list_st* items, size_t next_id)
 			close(fd);
 			exit_program(temp, "unable to allocate memory");
 		}
+		encrypt_rot13(join);
 		ny_wrstr_nl(fd, join);
 		free(join);
 		items = items->next;

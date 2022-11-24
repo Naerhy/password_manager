@@ -31,6 +31,9 @@ typedef struct item_s
 
 typedef struct timeval timeval_st;
 
+// encrypt.c
+void encrypt_rot13(char* str);
+
 // exec.c
 void exec_cmd(cmd_et cmd, int argc, char** argv, ny_list_st** items, size_t* next_id);
 
