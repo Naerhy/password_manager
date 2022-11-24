@@ -1,4 +1,4 @@
-NAME = password_manager
+NAME = pwm
 
 SRC = ${wildcard src/*.c}
 
@@ -19,6 +19,8 @@ RM = rm -rf
 
 ${NAME}: ${OBJ}
 	${CC} -o ${NAME} ${OBJ} ${LIB}
+	mv ${NAME} /home/${USER}/.local/bin/
+	mkdir -p /home/${USER}/.pwm/backups/
 
 all: ${NAME}
 
@@ -27,6 +29,8 @@ clean:
 
 fclean: clean
 	${RM} ${NAME}
+	${RM} /home/${USER}/.local/bin/${NAME}
+	${RM} /home/${USER}/.pwm/
 
 re: fclean all
 
