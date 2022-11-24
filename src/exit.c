@@ -42,6 +42,32 @@ static int write_id(int fd, size_t next_id)
 	return 1;
 }
 
+static void sort_list(ny_list_st* items)
+{
+	ny_list_st* loop;
+	item_st* x;
+	item_st* y;
+	void* temp;
+
+	while (items)
+	{
+		loop = items->next;
+		while (loop)
+		{
+			x = (item_st*)items->content;
+			y = (item_st*)loop->content;
+			if (ny_strcmp(x->website, y->website) > 0)
+			{
+				temp = items->content;
+				items->content = loop->content;
+				loop->content = temp;
+			}
+			loop = loop->next;
+		}
+		items = items->next;
+	}
+}
+
 void write_to_file(ny_list_st* items, size_t next_id)
 {
 	int fd;
@@ -58,6 +84,7 @@ void write_to_file(ny_list_st* items, size_t next_id)
 		close(fd);
 		exit_program(items, "unable to allocate memory");
 	}
+	sort_list(items);
 	temp = items;
 	while (items)
 	{
